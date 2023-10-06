@@ -1,6 +1,6 @@
 import Notiflix from 'notiflix';
 import { Btn, Form, Input, Label } from './ContactForm.styled';
-import { createContacts, deleteContacts } from '../../redux/slice';
+import { createContacts } from '../../redux/slice';
 import { useDispatch, useSelector } from 'react-redux';
 
 export const ContactForm = () => {
