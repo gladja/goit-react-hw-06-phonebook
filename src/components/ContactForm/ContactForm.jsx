@@ -1,6 +1,31 @@
+import Notiflix from 'notiflix';
 import { Btn, Form, Input, Label } from './ContactForm.styled';
+import { createContacts, deleteContacts } from '../../redux/slice';
+import { useDispatch, useSelector } from 'react-redux';
 
-export const ContactForm = ({handleSubmit}) => {
+export const ContactForm = () => {
+  const dispatch = useDispatch();
+  const contacts = useSelector(state => state.phonebook.contacts);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const { name, number } = e.target.elements;
+    const newContacts = {
+      name: name.value,
+      number: number.value,
+    };
+    if (name.value.trim() === '' || number.value.trim() === '') {
+      return Notiflix.Notify.warning('Please write First name Last name and number');
+    }
+    const isDoubleName = contacts.find(el => el.name === name.value);
+    if (isDoubleName) {
+      return Notiflix.Notify.failure(`${name.value} is already in contacts`);
+    }
+
+    dispatch(createContacts(newContacts));
+    e.currentTarget.reset();
+  };
+
   return (
     <>
       <Form onSubmit={handleSubmit}>
