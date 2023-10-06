@@ -1,17 +1,18 @@
-import { useEffect, useState } from 'react';
-import { nanoid } from 'nanoid';
 import Notiflix from 'notiflix';
-import data from '../data/data.json';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { createContacts, deleteContacts, filterContacts, contactsFilterResult } from '../redux/slice';
 
 import { ContactForm } from './ContactForm/ContactForm';
 import { ContactList } from './ContactList/ContactList';
 import { Filter } from './Filter/Filter';
-
 import { Title } from './ContactForm/ContactForm.styled';
 
+
 export const App = () => {
-  const [contacts, setContacts] = useState(JSON.parse(localStorage.getItem('contacts')) || data);
-  const [filter, setFilter] = useState('');
+  const dispatch = useDispatch();
+  const contacts = useSelector(state => state.phonebook.contacts);
+  const filter = useSelector(state => state.phonebook.filter )
 
   useEffect(() => {
     if (contacts) {
@@ -23,7 +24,6 @@ export const App = () => {
     e.preventDefault();
     const { name, number } = e.target.elements;
     const newContacts = {
-      id: nanoid(),
       name: name.value,
       number: number.value,
     };
@@ -34,23 +34,22 @@ export const App = () => {
     if (isDoubleName) {
       return Notiflix.Notify.failure(`${name.value} is already in contacts`);
     }
-    setContacts(([newContacts, ...contacts]));
+
+    dispatch(createContacts(newContacts));
     e.currentTarget.reset();
   };
 
+  const handleDelete = (id) => {
+    dispatch(deleteContacts(id));
+  };
+
   const contactsFilter = (e) => {
-    setFilter(e.target.value);
+    dispatch(filterContacts(e.target.value))
   };
 
   const contactsFilterResult = contacts.filter(el => {
     return el.name.toLowerCase().includes(filter.toLowerCase());
   });
-  // console.log(contactsFilterResult);
-
-  const handleDelete = (id) => {
-    const filteredItems = contacts.filter(el => el.id !== id);
-    setContacts(filteredItems);
-  };
 
   return (
     <>
