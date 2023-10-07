@@ -2,19 +2,12 @@ import { BtnDel, Item, List, Row } from './ContactList.styled';
 import { AiFillDelete } from 'react-icons/ai';
 import { IconContext } from 'react-icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
 import { deleteContacts } from '../../redux/slice';
 
 export const ContactList = () => {
   const dispatch = useDispatch();
   const contacts = useSelector(state => state.phonebook.contacts);
   const filter = useSelector(state => state.phonebook.filter )
-
-  // useEffect(() => {
-  //   if (contacts) {
-  //     localStorage.setItem('contacts', JSON.stringify(contacts));
-  //   }
-  // }, [contacts]);
 
   const handleDelete = (id) => {
     dispatch(deleteContacts(id));
