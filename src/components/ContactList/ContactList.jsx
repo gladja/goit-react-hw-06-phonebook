@@ -10,11 +10,11 @@ export const ContactList = () => {
   const contacts = useSelector(state => state.phonebook.contacts);
   const filter = useSelector(state => state.phonebook.filter )
 
-  useEffect(() => {
-    if (contacts) {
-      localStorage.setItem('contacts', JSON.stringify(contacts));
-    }
-  }, [contacts]);
+  // useEffect(() => {
+  //   if (contacts) {
+  //     localStorage.setItem('contacts', JSON.stringify(contacts));
+  //   }
+  // }, [contacts]);
 
   const handleDelete = (id) => {
     dispatch(deleteContacts(id));
